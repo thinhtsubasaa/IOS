@@ -230,6 +230,7 @@ import 'package:Thilogi/utils/next_screen.dart';
 import 'package:Thilogi/widgets/divider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -295,6 +296,7 @@ class _BodyAccountScreenState extends State<BodyAccountScreen> with TickerProvid
   late bool _loading = false;
   bool _isLoading = true;
   bool get isLoading => _isLoading;
+
   XeRaCongModel? _data;
   String? _message;
   String? get message => _message;
@@ -339,7 +341,11 @@ class _BodyAccountScreenState extends State<BodyAccountScreen> with TickerProvid
           local: true,
           isRemoved: false,
         ));
+
+        _loading = true;
+        print("loading: ${_loading}");
       });
+
       print("url: ${_lstFiles}");
     }
   }
@@ -364,6 +370,8 @@ class _BodyAccountScreenState extends State<BodyAccountScreen> with TickerProvid
           text: "Đổi Avatar thành công",
           confirmBtnText: 'Đồng ý',
         );
+        ub?.hinhAnhUrl = imageUrl;
+        clear(context);
       } else {}
     } catch (e) {
       _message = e.toString();
@@ -378,6 +386,50 @@ class _BodyAccountScreenState extends State<BodyAccountScreen> with TickerProvid
     nextScreenReplace(context, AccountPage());
   }
 
+  Future<File> compressImage(File file) async {
+    setState(() {
+      _loading = true;
+    });
+
+    final bytes = await file.readAsBytes();
+    final String extension = file.path.split('.').last.toLowerCase();
+    CompressFormat format;
+
+    // Xác định định dạng dựa trên phần mở rộng của tệp
+    switch (extension) {
+      case 'png':
+        format = CompressFormat.png; // Định dạng PNG
+        break;
+
+      case 'jpeg':
+        format = CompressFormat.jpeg; // Định dạng JPEG
+        break;
+
+      case 'jpg':
+        format = CompressFormat.jpeg; // Định dạng JPG cũng coi như JPEG
+        break;
+
+      default:
+        throw Exception('Unsupported file format'); // Nếu không hỗ trợ
+    }
+
+    try {
+      final compressedBytes = await FlutterImageCompress.compressWithList(
+        bytes,
+        minWidth: 800,
+        minHeight: 800,
+        quality: 90,
+        format: format, // Sử dụng định dạng đã xác định
+      );
+
+      final newFile = File(file.path)..writeAsBytesSync(compressedBytes);
+      return newFile;
+    } catch (e) {
+      print("Error compressing image: $e"); // Ghi log lỗi
+      return file; // Trả về tệp gốc nếu gặp lỗi
+    }
+  }
+
   _onSave() async {
     setState(() {
       _loading = true;
@@ -388,25 +440,31 @@ class _BodyAccountScreenState extends State<BodyAccountScreen> with TickerProvid
     for (var fileItem in _lstFiles) {
       if (fileItem?.uploaded == false && fileItem?.isRemoved == false) {
         File file = File(fileItem!.file!);
-        var response = await RequestHelper().uploadAvatar(file);
-        widget.lstFiles.add(CheckSheetFileModel(
-          isRemoved: response["isRemoved"],
-          id: response["id"],
-          fileName: response["fileName"],
-          path: response["path"],
-        ));
-        fileItem.uploaded = true;
-        setState(() {
-          _loading = false;
-        });
-
-        // fileItem.uploaded = true; // Đánh dấu file đã được upload
-
-        if (response["path"] != null) {
-          imageUrls.add(response["path"]);
+        if (file.existsSync()) {
+          file = await compressImage(file);
         }
-        // } else if (fileItem?.uploaded == true && fileItem?.file != null) {
-        //   imageUrls.add(fileItem.path!); // Nếu đã upload trước đó, chỉ thêm URL
+        var response = await RequestHelper().uploadAvatar(file);
+        print("Response: $response");
+        if (response != null) {
+          widget.lstFiles.add(CheckSheetFileModel(
+            isRemoved: response["isRemoved"],
+            id: response["id"],
+            fileName: response["fileName"],
+            path: response["path"],
+          ));
+          fileItem.uploaded = true;
+          if (response["path"] != null) {
+            imageUrls.add(response["path"]);
+          }
+          // setState(() {
+          //   _loading = false;
+          // });
+
+          // fileItem.uploaded = true; // Đánh dấu file đã được upload
+
+          // } else if (fileItem?.uploaded == true && fileItem?.file != null) {
+          //   imageUrls.add(fileItem.path!); // Nếu đã upload trước đó, chỉ thêm URL
+        }
       }
     }
 
@@ -431,7 +489,6 @@ class _BodyAccountScreenState extends State<BodyAccountScreen> with TickerProvid
           print("loading: ${_loading}");
           setState(() {
             _lstFiles.clear();
-
             _loading = false;
           });
         });
@@ -541,7 +598,7 @@ class _BodyAccountScreenState extends State<BodyAccountScreen> with TickerProvid
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF00B528),
                       ),
-                      onPressed: (_loading || _allowUploadFile() == false) ? null : () => _onSave(),
+                      onPressed: (_loading == false) ? null : () => _onSave(),
                       // onPressed: () => _onSave(),
                       icon: const Icon(Icons.cloud_upload),
                       label: const Text("Lưu"),

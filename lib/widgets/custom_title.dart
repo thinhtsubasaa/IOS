@@ -7,7 +7,7 @@ Widget customTitle(String text) {
   return SelectableText(
     text.tr(),
     textAlign: TextAlign.center,
-    style: TextStyle(
+    style: const TextStyle(
       color: AppConfig.textButton,
       fontFamily: 'Roboto',
       fontSize: 16,
@@ -30,8 +30,6 @@ class CustomTitleBottom extends StatelessWidget {
       children: [
         Image.asset(
           iconPath,
-          // height: 50, // Chiều cao của icon, có thể điều chỉnh theo yêu cầu
-          // width: 50, // Chiều rộng của icon, có thể điều chỉnh theo yêu cầu
         ),
         Text(
           title,

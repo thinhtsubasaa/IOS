@@ -1011,7 +1011,7 @@ class _BodyLSVanChuyenScreenState extends State<BodyLSVanChuyenScreen> with Tick
                                         ),
                                         Text(
                                           'Tổng số xe đã thực hiện: ${_dn?.length.toString() ?? ""}/${_cx?.length.toString() ?? ""}',
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontFamily: 'Comfortaa',
                                             fontSize: 16,
                                             fontWeight: FontWeight.w600,

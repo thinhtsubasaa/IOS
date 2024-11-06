@@ -117,9 +117,11 @@ class RequestHelper {
       var response = await http.Response.fromStream(streamedResponse);
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
+      } else {
+        throw Exception('Upload failed with status code: ${response.body}');
       }
     } catch (e) {
-      return null;
+      print('Error: ${e.toString()}');
     }
   }
 

@@ -1,4 +1,6 @@
 import 'package:Thilogi/blocs/user_bloc.dart';
+import 'package:Thilogi/config/config.dart';
+import 'package:Thilogi/widgets/custom_title.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -23,11 +25,20 @@ class _qrCodeRutXeState extends State<qrCodeRutXe> with SingleTickerProviderStat
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('QR Code'),
+        title: const Text(
+          'QR CODE RÚT XE TẠI NHÀ MÁY',
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            fontFamily: 'Comfortaa',
+            fontSize: 17,
+            color: Colors.red,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
       ),
       body: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.red, width: 14.0), // Viền đỏ với độ dày 3
+          border: Border.all(color: Colors.blue, width: 14.0), // Viền đỏ với độ dày 3
           borderRadius: BorderRadius.circular(8.0),
           // Góc bo tròn (tuỳ chọn)
         ),
@@ -40,14 +51,14 @@ class _qrCodeRutXeState extends State<qrCodeRutXe> with SingleTickerProviderStat
               child: QrImageView(
                 data: ub?.maNhanVien ?? "",
                 version: QrVersions.auto,
-                size: 250,
+                size: 230,
                 eyeStyle: const QrEyeStyle(
                   eyeShape: QrEyeShape.square, // Hoặc QrEyeShape.circle
-                  color: Color(0xFFA71C20), // Đổi màu của "mắt" QR code
+                  color: Colors.black, // Đổi màu của "mắt" QR code
                 ),
                 dataModuleStyle: const QrDataModuleStyle(
                   dataModuleShape: QrDataModuleShape.square, // Hoặc QrDataModuleShape.circle
-                  color: Color(0xFFA71C20), // Đổi màu của các ô dữ liệu nhỏ
+                  color: Colors.black, // Đổi màu của các ô dữ liệu nhỏ
                 ),
               ),
             ),
@@ -70,6 +81,25 @@ class _qrCodeRutXeState extends State<qrCodeRutXe> with SingleTickerProviderStat
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class BottomContent extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height / 12,
+      padding: EdgeInsets.all(10),
+      decoration: const BoxDecoration(
+        color: AppConfig.bottom,
+      ),
+      child: Center(
+        child: customTitle(
+          'QRCODE RÚT XE NHÀ MÁY ',
         ),
       ),
     );

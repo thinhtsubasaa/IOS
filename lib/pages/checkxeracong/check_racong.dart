@@ -16,7 +16,7 @@ class CheckXeRaCongPage extends StatelessWidget {
         children: [
           // CustomCard(),
           SizedBox(
-            height: 20,
+            height: 25,
           ),
           // Container(
           //   padding: EdgeInsets.only(left: 8, top: 10),

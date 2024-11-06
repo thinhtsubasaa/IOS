@@ -101,6 +101,7 @@ class _BodyBaiXeScreenState extends State<BodyBaiXeScreen> with TickerProviderSt
   PickedFile? _pickedFile;
   List<FileItem?> _lstFiles = [];
   final _picker = ImagePicker();
+  bool _isAlertShown = false;
 
   @override
   void initState() {
@@ -133,32 +134,6 @@ class _BodyBaiXeScreenState extends State<BodyBaiXeScreen> with TickerProviderSt
     super.dispose();
   }
 
-  // Future imageSelector(BuildContext context, String pickerType) async {
-  //   switch (pickerType) {
-  //     case "gallery":
-
-  //       /// GALLERY IMAGE PICKER
-  //       _pickedFile = await _picker.getImage(source: ImageSource.gallery);
-  //       break;
-
-  //     case "camera":
-
-  //       /// CAMERA CAPTURE CODE
-  //       _pickedFile = await _picker.getImage(source: ImageSource.camera);
-  //       break;
-  //   }
-
-  //   if (_pickedFile != null) {
-  //     setState(() {
-  //       _lstFiles.add(FileItem(
-  //         uploaded: false,
-  //         file: _pickedFile!.path,
-  //         local: true,
-  //         isRemoved: false,
-  //       ));
-  //     });
-  //   }
-  // }
   Future imageSelector(BuildContext context, String pickerType) async {
     if (pickerType == "gallery") {
       // Chọn nhiều ảnh từ thư viện
@@ -780,14 +755,43 @@ class _BodyBaiXeScreenState extends State<BodyBaiXeScreen> with TickerProviderSt
 
   Widget _buildTableOptions(BuildContext context) {
     int index = 0; // Biến đếm số thứ tự
+    Set<String> uniquePhuongThucSet = {};
+    bool isDifferentPhuongThucFound = false;
+
+    // Kiểm tra phương thức khác nhau trước khi tạo bảng
+    for (var item in _dsdongcontList ?? []) {
+      if (uniquePhuongThucSet.isNotEmpty && !uniquePhuongThucSet.contains(item.phuongThuc)) {
+        setState(() {
+          isDifferentPhuongThucFound = true;
+        });
+        break;
+      }
+      uniquePhuongThucSet.add(item.phuongThuc ?? "");
+    }
+
     return Container(
-      width: 100.w,
+      width: MediaQuery.of(context).size.width * 1,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (isDifferentPhuongThucFound && !_isAlertShown)
+            AnimatedBuilder(
+              animation: _colorAnimation,
+              builder: (context, child) {
+                return Text(
+                  'Phát hiện các xe có PHƯƠNG THỨC ĐI TÀU khác nhau',
+                  style: TextStyle(
+                    fontFamily: 'Comfortaa',
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: _colorAnimation.value,
+                  ),
+                );
+              },
+            ),
           Text(
             'Danh sách xe : ${_dsdongcontList?.length.toString() ?? ''}',
-            style: TextStyle(
+            style: const TextStyle(
               fontFamily: 'Comfortaa',
               fontSize: 18,
               fontWeight: FontWeight.w700,
@@ -795,32 +799,44 @@ class _BodyBaiXeScreenState extends State<BodyBaiXeScreen> with TickerProviderSt
           ),
           Table(
             border: TableBorder.all(),
-            columnWidths: {
-              0: FlexColumnWidth(0.5),
-              1: FlexColumnWidth(0.5),
+            columnWidths: const {
+              0: FlexColumnWidth(0.3),
+              1: FlexColumnWidth(0.33),
+              2: FlexColumnWidth(0.37),
             },
             children: [
               TableRow(
                 children: [
                   Container(
-                    width: double.infinity,
                     color: Colors.red,
-                    child: _buildTableCell('Loại Xe', textColor: Colors.white),
+                    child: _buildTableCell('Phương thức', textColor: Colors.white),
                   ),
                   Container(
                     color: Colors.red,
                     child: _buildTableCell('Số Khung', textColor: Colors.white),
                   ),
+                  Container(
+                    color: Colors.red,
+                    child: _buildTableCell('Loại Xe', textColor: Colors.white),
+                  ),
                 ],
               ),
               ..._dsdongcontList?.map((item) {
                     index++; // Tăng số thứ tự sau mỗi lần lặp
+                    // bool isBackgroundRed = _dsdongcontList!.length > 2 && uniquePhuongThucSet.isNotEmpty && !uniquePhuongThucSet.contains(item.phuongThuc);
+
+                    // // Thêm `phuongThuc` vào `Set`
+                    // uniquePhuongThucSet.add(item.phuongThuc ?? "");
 
                     return TableRow(
+                      // decoration: BoxDecoration(
+                      //   color: isBackgroundRed ? Colors.yellow.withOpacity(0.4) : Colors.white, // Màu nền thay đổi theo giá trị isCheck
+                      // ),
                       children: [
                         // _buildTableCell(index.toString()), // Số thứ tự
-                        _buildTableCell(item.loaiXe ?? ""),
+                        _buildTableCell(item.phuongThuc ?? ""),
                         _buildTableCell(item.soKhung ?? ""),
+                        _buildTableCell(item.loaiXe ?? ""),
                       ],
                     );
                   }).toList() ??
@@ -833,7 +849,7 @@ class _BodyBaiXeScreenState extends State<BodyBaiXeScreen> with TickerProviderSt
   }
 
   Widget _buildTableOptionsDS(BuildContext context) {
-    int index = 0; // Biến đếm số thứ tự
+    int index = 0;
     return Container(
       width: 100.w,
       child: Column(
@@ -855,7 +871,7 @@ class _BodyBaiXeScreenState extends State<BodyBaiXeScreen> with TickerProviderSt
           ),
           Text(
             'Danh sách xe : ${_dsdongsealList?.length.toString() ?? ''}',
-            style: TextStyle(
+            style: const TextStyle(
               fontFamily: 'Comfortaa',
               fontSize: 18,
               fontWeight: FontWeight.w700,
@@ -1184,7 +1200,7 @@ class _BodyBaiXeScreenState extends State<BodyBaiXeScreen> with TickerProviderSt
                                                                 child: SingleChildScrollView(
                                                                   scrollDirection: Axis.horizontal,
                                                                   child: Text(
-                                                                    item.tenPhuongTien ?? "",
+                                                                    item.bienSo ?? "",
                                                                     textAlign: TextAlign.center,
                                                                     style: const TextStyle(
                                                                       fontFamily: 'Comfortaa',

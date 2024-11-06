@@ -98,6 +98,11 @@ class UserBloc extends ChangeNotifier {
     notifyListeners();
   }
 
+  set hinhAnhUrl(String? value) {
+    _hinhAnhUrl = value;
+    notifyListeners();
+  }
+
   Future refreshTokenValue(data) async {
     _token = data["token"];
     _refreshToken = data["refreshToken"];

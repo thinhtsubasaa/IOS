@@ -1,20 +1,19 @@
-import 'package:Thilogi/pages/giaoxe/custom_body_giaoxe.dart';
+import 'package:Thilogi/pages/vanchuyen/giaoxe/custom_body_vanchuyen.dart';
 import 'package:flutter/material.dart';
 import 'package:Thilogi/config/config.dart';
-
 import 'package:sizer/sizer.dart';
-import '../../widgets/custom_appbar.dart';
-import '../../widgets/custom_card.dart';
-import '../../widgets/custom_title.dart';
 
-class GiaoXePage extends StatelessWidget {
-  final String? soKhung;
+import '../../../widgets/custom_appbar.dart';
+import '../../../widgets/custom_card.dart';
+import '../../../widgets/custom_title.dart';
 
-  GiaoXePage({this.soKhung});
+class VanChuyenPage extends StatelessWidget {
+  int currentPage = 0; // Đặt giá trị hiện tại của trang
+  int pageCount = 3;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: customAppBar(context),
       body: Column(
         children: [
@@ -22,10 +21,14 @@ class GiaoXePage extends StatelessWidget {
           Expanded(
             child: Container(
               width: 100.w,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onPrimary,
+              height: MediaQuery.of(context).size.height,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(AppConfig.backgroundImagePath),
+                  fit: BoxFit.cover,
+                ),
               ),
-              child: CustomBodyGiaoXe(soKhung: soKhung),
+              child: CustomBodyVanChuyen(),
             ),
           ),
           BottomContent(),
@@ -45,10 +48,8 @@ class BottomContent extends StatelessWidget {
       decoration: const BoxDecoration(
         color: AppConfig.bottom,
       ),
-      child: Center(
-        child: customTitle(
-          'GIAO XE',
-        ),
+      child: customTitle(
+        'VẬN CHUYỂN / GIAO XE',
       ),
     );
   }

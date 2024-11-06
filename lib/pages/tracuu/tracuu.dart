@@ -218,9 +218,9 @@ class _BodyAccountScreenState extends State<BodyAccountScreen> with SingleTicker
       });
     }).then((_) {
       setState(() {
-        barcodeScanResult = null;
-        _qrData = '';
-        _qrDataController.text = '';
+        // barcodeScanResult = null;
+        // _qrData = '';
+        // _qrDataController.text = '';
         _loading = false;
       });
     });

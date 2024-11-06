@@ -210,7 +210,7 @@ class UserUI extends StatelessWidget {
           leading: CircleAvatar(
             backgroundColor: Colors.redAccent[100],
             radius: 18,
-            child: Icon(
+            child: const Icon(
               Feather.lock,
               size: 18,
               color: Colors.white,

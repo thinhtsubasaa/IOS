@@ -3,13 +3,11 @@ import 'dart:async';
 import 'package:Thilogi/models/tinhtrangdonhang.dart';
 import 'package:Thilogi/models/tracking_chuyentiep.dart';
 import 'package:Thilogi/models/tracking_xuatxe.dart';
-import 'package:Thilogi/pages/Home.dart';
 import 'package:Thilogi/pages/tracking/custom_body_trackingxe.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:Thilogi/config/config.dart';
-import 'package:Thilogi/pages/tracking/custom_body_tracking_vitri.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_datawedge/flutter_datawedge.dart';
 import 'package:flutter_datawedge/models/scan_result.dart';
@@ -233,14 +231,14 @@ class _TrackingXeVitriPageState extends State<TrackingXeVitriPage> with SingleTi
           Container(
             width: 20.w,
             height: 10.h,
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(5),
                 bottomLeft: Radius.circular(5),
               ),
               color: AppConfig.primaryColor,
             ),
-            child: Center(
+            child: const Center(
               child: Text(
                 'Số khung\n(VIN)',
                 textAlign: TextAlign.center,
@@ -259,13 +257,13 @@ class _TrackingXeVitriPageState extends State<TrackingXeVitriPage> with SingleTi
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: TextField(
                 controller: _qrDataController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Nhập hoặc quét mã VIN',
                 ),
                 onSubmitted: (value) {
                   _handleBarcodeScanResult(value);
                 },
-                style: TextStyle(
+                style: const TextStyle(
                   fontFamily: 'Comfortaa',
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
@@ -417,7 +415,7 @@ class _TrackingXeVitriPageState extends State<TrackingXeVitriPage> with SingleTi
             children: [
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height < 600 ? 25.h : 20.h),
+                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height < 600 ? 23.h : 18.h),
                   padding: EdgeInsets.only(left: 10, right: 10),
                   width: 100.w,
                   decoration: const BoxDecoration(

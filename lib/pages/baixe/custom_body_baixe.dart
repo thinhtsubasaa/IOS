@@ -1066,7 +1066,7 @@ class _BodyBaiXeScreenState extends State<BodyBaiXeScreen> with TickerProviderSt
                     child: Column(
                       children: [
                         Container(
-                          height: 7.h,
+                          height: 6.h,
                           child: Row(
                             children: [
                               Container(
@@ -1075,7 +1075,7 @@ class _BodyBaiXeScreenState extends State<BodyBaiXeScreen> with TickerProviderSt
                                   'Loại xe: ',
                                   style: TextStyle(
                                     fontFamily: 'Comfortaa',
-                                    fontSize: 15,
+                                    fontSize: 13,
                                     fontWeight: FontWeight.w700,
                                     color: Color(0xFF818180),
                                   ),
@@ -1088,9 +1088,9 @@ class _BodyBaiXeScreenState extends State<BodyBaiXeScreen> with TickerProviderSt
                                   child: Text(
                                     _data?.tenSanPham ?? '',
                                     textAlign: TextAlign.left,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontFamily: 'Coda Caption',
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w700,
                                       color: AppConfig.primaryColor,
                                     ),
@@ -1271,7 +1271,7 @@ class Item extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 7.h,
+      height: 6.h,
       padding: const EdgeInsets.only(left: 10, right: 10),
       child: Center(
         child: Row(
@@ -1280,7 +1280,7 @@ class Item extends StatelessWidget {
               title,
               style: const TextStyle(
                 fontFamily: 'Comfortaa',
-                fontSize: 14,
+                fontSize: 13,
                 fontWeight: FontWeight.w700,
                 color: Color(0xFF818180),
               ),
@@ -1289,7 +1289,7 @@ class Item extends StatelessWidget {
               value ?? "",
               style: const TextStyle(
                 fontFamily: 'Comfortaa',
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: FontWeight.w700,
                 color: AppConfig.primaryColor,
               ),
@@ -1314,7 +1314,7 @@ class ItemGhiChu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 7.h,
+      height: 6.h,
       padding: const EdgeInsets.only(left: 10, right: 10),
       child: Center(
         child: Row(
@@ -1323,25 +1323,25 @@ class ItemGhiChu extends StatelessWidget {
               title,
               style: const TextStyle(
                 fontFamily: 'Comfortaa',
-                fontSize: 14,
+                fontSize: 13,
                 fontWeight: FontWeight.w700,
                 color: Color(0xFF818180),
               ),
             ),
-            SizedBox(width: 10), // Khoảng cách giữa title và text field
+            SizedBox(width: 10),
             Expanded(
               child: TextField(
                 controller: controller,
-                style: TextStyle(
+                style: const TextStyle(
                   fontFamily: 'Comfortaa',
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.w700,
                   color: AppConfig.primaryColor,
                 ),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: InputBorder.none, // Loại bỏ đường viền mặc định
                   hintText: '',
-                  contentPadding: EdgeInsets.symmetric(vertical: 9),
+                  // contentPadding: EdgeInsets.symmetric(vertical: 9),
                 ),
               ),
             ),

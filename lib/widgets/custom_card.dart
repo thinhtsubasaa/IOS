@@ -52,7 +52,7 @@ class _CustomCardState extends State<CustomCard>
               'A-WMS',
               style: TextStyle(
                 fontFamily: 'Roboto',
-                fontSize: 20.sp,
+                fontSize: 22.sp,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
@@ -63,11 +63,10 @@ class _CustomCardState extends State<CustomCard>
               children: [
                 Container(
                   padding: EdgeInsets.only(right: 2.w),
-                  child: const Center(
+                  child: Center(
                     child: Icon(
                       Icons.person,
                       color: Colors.white,
-                      size:30,
                     ),
                   ),
                 ),
@@ -78,7 +77,7 @@ class _CustomCardState extends State<CustomCard>
                     style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'Comfortaa',
-                      fontSize: 12.sp,
+                      fontSize: 15.sp,
                       fontWeight: FontWeight.w500,
                     ),
                     overflow: TextOverflow.ellipsis,
@@ -136,7 +135,6 @@ class _CustomCardState extends State<CustomCard>
                     icon: Icon(
                       Icons.arrow_drop_down,
                       color: Colors.white,
-                      size:35,
                     ),
                   ),
                 ),
@@ -191,7 +189,7 @@ class _CustomCardBmsState extends State<CustomCardBms>
               'BMS',
               style: TextStyle(
                 fontFamily: 'Roboto',
-                fontSize: 22.sp,
+                fontSize: 23.sp,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
@@ -206,7 +204,6 @@ class _CustomCardBmsState extends State<CustomCardBms>
                     child: Icon(
                       Icons.person,
                       color: Colors.white,
-                      size: 30,
                     ),
                   ),
                 ),
@@ -217,7 +214,7 @@ class _CustomCardBmsState extends State<CustomCardBms>
                     style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'Comfortaa',
-                      fontSize: 12.sp,
+                      fontSize: 15.sp,
                       fontWeight: FontWeight.w500,
                     ),
                     overflow: TextOverflow.ellipsis,
@@ -275,7 +272,6 @@ class _CustomCardBmsState extends State<CustomCardBms>
                     icon: Icon(
                       Icons.arrow_drop_down,
                       color: Colors.white,
-                      size:35
                     ),
                   ),
                 ),

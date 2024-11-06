@@ -1,8 +1,12 @@
 import 'dart:convert';
 import 'package:Thilogi/models/ds_chuadongcont.dart';
 import 'package:Thilogi/services/request_helper.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
+import '../../config/config.dart';
+import '../../models/dongxe.dart';
 import '../../widgets/loading.dart';
 import 'package:http/http.dart' as http;
 
@@ -33,23 +37,25 @@ class _BodyChuaDongContScreenState extends State<BodyChuaDongContScreen> with Ti
   bool _hasError = false;
   bool get hasError => _hasError;
   String? selectedDate;
-
+  String? DongXeId;
   String? _errorCode;
   String? get errorCode => _errorCode;
   final TextEditingController textEditingController = TextEditingController();
   final TextEditingController maNhanVienController = TextEditingController();
+  List<DongXeModel>? _dongxeList;
+  List<DongXeModel>? get dongxeList => _dongxeList;
 
   @override
   void initState() {
     super.initState();
     selectedDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
-    getDSXChuaDongCont();
+    getDSXChuaDongCont(DongXeId ?? "");
   }
 
-  Future<void> getDSXChuaDongCont() async {
+  Future<void> getDSXChuaDongCont(String? DongXe_Id) async {
     _dn = [];
     try {
-      final http.Response response = await requestHelper.getData('KhoThanhPham/GetDanhSachXeDongContAll_KH');
+      final http.Response response = await requestHelper.getData('KhoThanhPham/GetDanhSachXeDongContAll_KH?&DongXe_Id=$DongXe_Id');
       if (response.statusCode == 200) {
         var decodedData = jsonDecode(response.body);
         print("data: " + decodedData.toString());
@@ -224,7 +230,7 @@ class _BodyChuaDongContScreenState extends State<BodyChuaDongContScreen> with Ti
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        await getDSXChuaDongCont();
+        await getDSXChuaDongCont(DongXeId ?? "");
       }, // Gọi hàm tải lại dữ liệu
       child: Container(
         child: Column(
@@ -356,6 +362,148 @@ class _BodyChuaDongContScreenState extends State<BodyChuaDongContScreen> with Ti
                                   //     ],
                                   //   ),
                                   // ),
+                                  Container(
+                                    height: MediaQuery.of(context).size.height < 600 ? 10.h : 6.h,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      border: Border.all(
+                                        color: const Color(0xFFBC2925),
+                                        width: 1.5,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 20.w,
+                                          decoration: const BoxDecoration(
+                                            color: Color(0xFFF6C6C7),
+                                            border: Border(
+                                              right: BorderSide(
+                                                color: Color(0xFF818180),
+                                                width: 1,
+                                              ),
+                                            ),
+                                          ),
+                                          child: const Center(
+                                            child: Text(
+                                              "Dòng xe",
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                fontFamily: 'Comfortaa',
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w400,
+                                                color: AppConfig.textInput,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Container(
+                                              padding: EdgeInsets.only(top: MediaQuery.of(context).size.height < 600 ? 0 : 5),
+                                              child: DropdownButtonHideUnderline(
+                                                child: DropdownButton2<String>(
+                                                  isExpanded: true,
+                                                  items: _dongxeList?.map((item) {
+                                                    return DropdownMenuItem<String>(
+                                                      value: item.id,
+                                                      child: Container(
+                                                        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.9),
+                                                        child: SingleChildScrollView(
+                                                          scrollDirection: Axis.horizontal,
+                                                          child: Text(
+                                                            item.tenDongXe ?? "",
+                                                            textAlign: TextAlign.center,
+                                                            style: const TextStyle(
+                                                              fontFamily: 'Comfortaa',
+                                                              fontSize: 13,
+                                                              fontWeight: FontWeight.w600,
+                                                              color: AppConfig.textInput,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }).toList(),
+                                                  value: DongXeId,
+                                                  onChanged: (newValue) {
+                                                    setState(() {
+                                                      DongXeId = newValue;
+                                                      // doiTac_Id = null;
+                                                    });
+
+                                                    if (newValue != null) {
+                                                      if (newValue == '') {
+                                                        getDSXChuaDongCont('');
+                                                      } else {
+                                                        getDSXChuaDongCont(newValue);
+                                                        print("objectcong : ${newValue}");
+                                                      }
+                                                    }
+                                                  },
+                                                  buttonStyleData: const ButtonStyleData(
+                                                    padding: EdgeInsets.symmetric(horizontal: 16),
+                                                    height: 40,
+                                                    width: 200,
+                                                  ),
+                                                  dropdownStyleData: const DropdownStyleData(
+                                                    maxHeight: 200,
+                                                  ),
+                                                  menuItemStyleData: const MenuItemStyleData(
+                                                    height: 40,
+                                                  ),
+                                                  dropdownSearchData: DropdownSearchData(
+                                                    searchController: textEditingController,
+                                                    searchInnerWidgetHeight: 50,
+                                                    searchInnerWidget: Container(
+                                                      height: 50,
+                                                      padding: const EdgeInsets.only(
+                                                        top: 8,
+                                                        bottom: 4,
+                                                        right: 8,
+                                                        left: 8,
+                                                      ),
+                                                      child: TextFormField(
+                                                        expands: true,
+                                                        maxLines: null,
+                                                        controller: textEditingController,
+                                                        decoration: InputDecoration(
+                                                          isDense: true,
+                                                          contentPadding: const EdgeInsets.symmetric(
+                                                            horizontal: 10,
+                                                            vertical: 8,
+                                                          ),
+                                                          hintText: 'Tìm dòng xe',
+                                                          hintStyle: const TextStyle(fontSize: 12),
+                                                          border: OutlineInputBorder(
+                                                            borderRadius: BorderRadius.circular(8),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    searchMatchFn: (item, searchValue) {
+                                                      if (item is DropdownMenuItem<String>) {
+                                                        // Truy cập vào thuộc tính value để lấy ID của ViTriModel
+                                                        String itemId = item.value ?? "";
+                                                        // Kiểm tra ID của item có tồn tại trong _vl.vitriList không
+                                                        return _dongxeList?.any((baiXe) => baiXe.id == itemId && baiXe.tenDongXe?.toLowerCase().contains(searchValue.toLowerCase()) == true) ?? false;
+                                                      } else {
+                                                        return false;
+                                                      }
+                                                    },
+                                                  ),
+                                                  onMenuStateChange: (isOpen) {
+                                                    if (!isOpen) {
+                                                      textEditingController.clear();
+                                                    }
+                                                  },
+                                                ),
+                                              )),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(height: 5),
                                   Container(
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,

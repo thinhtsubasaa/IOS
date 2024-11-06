@@ -11,11 +11,11 @@ class MyHomePage extends StatelessWidget {
       appBar: customAppBar(),
       body: Column(
         children: [
-          Expanded(
+          const Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  const CustomImage(imagePath: AppConfig.homeImagePath),
+                  CustomImage(imagePath: AppConfig.homeImagePath),
                 ],
               ),
             ),
@@ -38,12 +38,12 @@ class BottomContent extends StatelessWidget {
             child: customTitleHome('LOGISTIC TRỌN GÓI\nHÀNG ĐẦU MIỀN TRUNG'),
           ),
           const SizedBox(height: 10),
-          CustomImage(imagePath: AppConfig.bottomHomeImagePath),
+          const CustomImage(imagePath: AppConfig.bottomHomeImagePath),
           const SizedBox(height: 15),
           CustomButton(onPressed: () {
             nextScreen(context, LoginPage());
           }),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
         ],
       ),
     );
@@ -54,7 +54,7 @@ Widget customTitleHome(String text) {
   return Text(
     text,
     textAlign: TextAlign.center,
-    style: TextStyle(
+    style: const TextStyle(
       color: AppConfig.titleColor,
       fontFamily: 'Roboto',
       fontSize: 16,
@@ -92,7 +92,7 @@ class CustomButton extends StatelessWidget {
         ),
         padding: EdgeInsets.all(10),
       ),
-      child: Text(
+      child: const Text(
         'WELCOME',
         style: TextStyle(
           color: AppConfig.textButton,

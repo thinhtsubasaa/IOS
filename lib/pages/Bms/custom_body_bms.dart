@@ -11,6 +11,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'package:Thilogi/utils/next_screen.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'package:quickalert/quickalert.dart';
@@ -21,6 +22,7 @@ import '../../blocs/menu_roles.dart';
 import '../../config/config.dart';
 import '../../models/menurole.dart';
 import '../../widgets/loading.dart';
+import 'package:new_version/new_version.dart';
 
 // ignore: use_key_in_widget_constructors
 class CustomBodyBms extends StatelessWidget {
@@ -66,9 +68,48 @@ class _BodyBmsScreenState extends State<BodyBmsScreen> with TickerProviderStateM
   @override
   void initState() {
     super.initState();
+    _checkVersion();
     _checkInternetAndShowAlert();
     _mb = Provider.of<MenuRoleBloc>(context, listen: false);
     _menuRoleFuture = _fetchMenuRoles();
+  }
+
+  void _checkVersion() async {
+    final newVersion = NewVersion(
+      iOSId: "com.thilogi.vn.logistics",
+      androidId: "com.thilogi.vn.logistics",
+    );
+    final status = await newVersion.getVersionStatus();
+    if (status != null) {
+      if (_isVersionLower(status.localVersion, status.storeVersion)) {
+        newVersion.showUpdateDialog(
+          context: context,
+          versionStatus: status,
+          dialogTitle: "CẬP NHẬT",
+          dismissButtonText: "Bỏ qua",
+          dialogText: "Ứng dụng đã có phiên bản mới, vui lòng cập nhật " + "${status.localVersion}" + " lên " + "${status.storeVersion}",
+          dismissAction: () {
+            SystemNavigator.pop();
+          },
+          updateButtonText: "Cập nhật",
+        );
+      }
+      print("DEVICE : " + status.localVersion);
+      print("STORE : " + status.storeVersion);
+    }
+  }
+
+  bool _isVersionLower(String localVersion, String storeVersion) {
+    final localParts = localVersion.split('.').map(int.parse).toList();
+    final storeParts = storeVersion.split('.').map(int.parse).toList();
+
+    for (int i = 0; i < localParts.length; i++) {
+      if (localParts[i] < storeParts[i]) return true;
+      if (localParts[i] > storeParts[i]) return false;
+    }
+
+    // If we get here, all parts are equal
+    return false;
   }
 
   Future<List<MenuRoleModel>> _fetchMenuRoles() async {

@@ -63,6 +63,7 @@ class DieuChuyenBloc extends ChangeNotifier {
             dangDiChuyen: decodedData['dangDiChuyen'],
             hinhAnh: decodedData['hinhAnh'],
             donVi: decodedData['donVi'],
+            phuongThuc: decodedData['phuongThuc'],
           );
         }
       } else {

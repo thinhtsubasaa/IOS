@@ -76,7 +76,7 @@ class _BodyNhanxeScreenState extends State<BodyNhanxeScreen> with TickerProvider
     return Container(
       width: MediaQuery.of(context).size.width < 330 ? 100.w : 90.w,
       // width: 100.w,
-      height: MediaQuery.of(context).size.height < 885 ? 9.h : 8.h,
+      height: MediaQuery.of(context).size.height < 885 ? 8.h : 8.h,
       margin: const EdgeInsets.only(top: 10),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.onPrimary,

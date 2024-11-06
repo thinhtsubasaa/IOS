@@ -29,6 +29,7 @@ class DieuChuyenModel {
   String? thoiGianKetThuc;
   String? nguoiPhuTrach;
   String? donVi;
+  String? phuongThuc;
   bool? dangDiChuyen;
 
   DieuChuyenModel(
@@ -62,6 +63,7 @@ class DieuChuyenModel {
       this.dangDiChuyen,
       this.nguoiPhuTrach,
       this.donVi,
+      this.phuongThuc,
       this.hinhAnh});
 
   factory DieuChuyenModel.fromJson(Map<String, dynamic> json) {
@@ -96,6 +98,7 @@ class DieuChuyenModel {
         dangDiChuyen: json["dangDiChuyen"],
         nguoiPhuTrach: json["nguoiPhuTrach"],
         hinhAnh: json["hinhAnh"],
+        phuongThuc: json["phuongThuc"],
         donVi: json["donVi"]);
   }
   Map<String, dynamic> toJson() => {
@@ -124,5 +127,6 @@ class DieuChuyenModel {
         "toaDo": toaDo,
         "hinhAnh": hinhAnh,
         "donVi": donVi,
+        "phuongThuc": phuongThuc,
       };
 }

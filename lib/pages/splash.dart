@@ -99,6 +99,7 @@ class _SplashPageState extends State<SplashPage> {
       _ab.getApiUrl();
       _checkVersion();
       if (ub.isSignedIn) {
+        _checkVersion();
         ub.getUserData();
         _ab.getData();
         _goToHomePage();

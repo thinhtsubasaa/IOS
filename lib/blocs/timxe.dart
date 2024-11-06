@@ -29,25 +29,18 @@ class TimXeBloc extends ChangeNotifier {
     _isLoading = true;
     _timxe = null;
     try {
-      final http.Response response = await requestHelper
-          .getData('KhoThanhPham/GetTimXeTrongBai?SoKhung=$soKhung');
+      final http.Response response = await requestHelper.getData('KhoThanhPham/GetTimXeTrongBai?SoKhung=$soKhung');
       if (response.statusCode == 200) {
         var decodedData = jsonDecode(response.body);
         print("data: ${decodedData}");
         if (decodedData != null) {
           List<DieuChuyen> dieuChuyenList = [];
-          if (decodedData['dieuChuyen'] != null &&
-              decodedData['dieuChuyen'] is List) {
-            dieuChuyenList = (decodedData['dieuChuyen'] as List<dynamic>)
-                .map((item) => DieuChuyen.fromJson(item))
-                .toList();
+          if (decodedData['dieuChuyen'] != null && decodedData['dieuChuyen'] is List) {
+            dieuChuyenList = (decodedData['dieuChuyen'] as List<dynamic>).map((item) => DieuChuyen.fromJson(item)).toList();
           }
           List<NhapKho> nhapKhoList = [];
-          if (decodedData['nhapKho'] != null &&
-              decodedData['nhapKho'] is List) {
-            nhapKhoList = (decodedData['nhapKho'] as List<dynamic>)
-                .map((item) => NhapKho.fromJson(item))
-                .toList();
+          if (decodedData['nhapKho'] != null && decodedData['nhapKho'] is List) {
+            nhapKhoList = (decodedData['nhapKho'] as List<dynamic>).map((item) => NhapKho.fromJson(item)).toList();
           }
           _timxe = TimXeModel(
             key: decodedData["key"],
@@ -61,6 +54,7 @@ class TimXeBloc extends ChangeNotifier {
             tenMau: decodedData['tenMau'],
             tenSanPham: decodedData['tenSanPham'],
             donVi: decodedData['donVi'],
+            phuongThuc: decodedData['phuongThuc'],
             dieuChuyen: dieuChuyenList,
             nhapKho: nhapKhoList,
           );

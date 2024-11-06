@@ -10,6 +10,7 @@ class TimXeModel {
   String? tenSanPham;
   String? nguoiPhuTrach;
   String? donVi;
+  String? phuongThuc;
   List<DieuChuyen>? dieuChuyen;
   List<NhapKho>? nhapKho;
 
@@ -27,6 +28,7 @@ class TimXeModel {
     this.donVi,
     this.dieuChuyen,
     this.nhapKho,
+    this.phuongThuc,
   });
 
   factory TimXeModel.fromJson(Map<String, dynamic> json) {
@@ -42,12 +44,9 @@ class TimXeModel {
       donVi: json["donVi"],
       tenSanPham: json["tenSanPham"],
       nguoiPhuTrach: json["nguoiPhuTrach"],
-      dieuChuyen: (json['dieuChuyen'] as List<dynamic>?)
-          ?.map((item) => DieuChuyen.fromJson(item))
-          .toList(),
-      nhapKho: (json['nhapKho'] as List<dynamic>?)
-          ?.map((item) => NhapKho.fromJson(item))
-          .toList(),
+      phuongThuc: json["phuongThuc"],
+      dieuChuyen: (json['dieuChuyen'] as List<dynamic>?)?.map((item) => DieuChuyen.fromJson(item)).toList(),
+      nhapKho: (json['nhapKho'] as List<dynamic>?)?.map((item) => NhapKho.fromJson(item)).toList(),
     );
   }
   Map<String, dynamic> toJson() => {
@@ -59,6 +58,7 @@ class TimXeModel {
         'tenViTri': tenViTri,
         'toaDo': toaDo,
         'nguoiPhuTrach': nguoiPhuTrach,
+        'phuongThuc': phuongThuc,
         'dieuChuyen': dieuChuyen?.map((item) => item.toJson()).toList(),
         'nhapKho': nhapKho?.map((item) => item.toJson()).toList(),
       };

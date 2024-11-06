@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:Thilogi/utils/delete_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_grid/responsive_grid.dart';
@@ -141,8 +140,7 @@ class _CheckSheetUploadAnhState extends State<CheckSheetUploadAnh> {
       isRemoved = true;
     } else {
       // find in list don't have isRemoved = false and have isRemoved = true
-      var tmp = _lstFiles.firstWhere((file) => file!.isRemoved == false,
-          orElse: () => null);
+      var tmp = _lstFiles.firstWhere((file) => file!.isRemoved == false, orElse: () => null);
       if (tmp == null) {
         isRemoved = true;
       }
@@ -164,8 +162,7 @@ class _CheckSheetUploadAnhState extends State<CheckSheetUploadAnh> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.87),
+            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.87),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -192,9 +189,7 @@ class _CheckSheetUploadAnhState extends State<CheckSheetUploadAnh> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF00B528),
                     ),
-                    onPressed: (_loading || _allowUploadFile() == false)
-                        ? null
-                        : () => _uploadAnh(),
+                    onPressed: (_loading || _allowUploadFile() == false) ? null : () => _uploadAnh(),
                     icon: const Icon(Icons.cloud_upload),
                     label: const Text("Tải ảnh"),
                   ),

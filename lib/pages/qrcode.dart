@@ -33,7 +33,7 @@ class _qrCodeState extends State<qrCode> with SingleTickerProviderStateMixin {
         ),
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Center(
@@ -53,7 +53,7 @@ class _qrCodeState extends State<qrCode> with SingleTickerProviderStateMixin {
             ),
             Text(
               "${ub?.name?.toUpperCase() ?? ""} - ${ub?.maNhanVien ?? ""}",
-              style: TextStyle(
+              style: const TextStyle(
                 fontFamily: 'Comfortaa',
                 fontSize: 17,
                 color: Colors.red,
@@ -62,7 +62,7 @@ class _qrCodeState extends State<qrCode> with SingleTickerProviderStateMixin {
             ),
             Text(
               ub?.tenPhongBan ?? "",
-              style: TextStyle(
+              style: const TextStyle(
                 fontFamily: 'Comfortaa',
                 fontSize: 17,
                 color: Colors.red,

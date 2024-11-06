@@ -42,18 +42,22 @@ import '../../widgets/checksheet_upload_anh.dart';
 import '../../widgets/loading.dart';
 
 class CustomBodyChuyenXe extends StatelessWidget {
+  final String? soKhung;
+  CustomBodyChuyenXe({this.soKhung});
   @override
   Widget build(BuildContext context) {
     return Container(
         child: BodyChuyenXeScreen(
+      soKhung: soKhung,
       lstFiles: [],
     ));
   }
 }
 
 class BodyChuyenXeScreen extends StatefulWidget {
+  final String? soKhung;
   final List<CheckSheetFileModel?> lstFiles;
-  const BodyChuyenXeScreen({super.key, required this.lstFiles});
+  const BodyChuyenXeScreen({super.key, required this.lstFiles, this.soKhung});
 
   @override
   _BodyChuyenXeScreenState createState() => _BodyChuyenXeScreenState();
@@ -70,7 +74,8 @@ class _BodyChuyenXeScreenState extends State<BodyChuyenXeScreen> with TickerProv
   String? ViTriId;
   String? TaiXeId;
   String? tenKhoXeDefault; // Lưu trữ tên kho xe mặc định
-  final _qrDataController = TextEditingController();
+  // final _qrDataController = TextEditingController();
+  late TextEditingController _qrDataController;
   DieuChuyenModel? _data;
   bool _loading = false;
   String? barcodeScanResult;
@@ -132,6 +137,10 @@ class _BodyChuyenXeScreenState extends State<BodyChuyenXeScreen> with TickerProv
     });
     requestLocationPermission();
     _checkInternetAndShowAlert();
+    _qrDataController = TextEditingController(text: widget.soKhung ?? '');
+    if (widget.soKhung != null && widget.soKhung!.isNotEmpty) {
+      _handleBarcodeScanResult(widget.soKhung!);
+    }
     dataWedge = FlutterDataWedge(profileName: "Example Profile");
     scanSubscription = dataWedge.onScanResult.listen((ScanResult result) {
       setState(() {
@@ -189,6 +198,7 @@ class _BodyChuyenXeScreenState extends State<BodyChuyenXeScreen> with TickerProv
   @override
   void dispose() {
     textEditingController.dispose();
+    _qrDataController.dispose();
     super.dispose();
   }
 
@@ -1173,11 +1183,11 @@ class _BodyChuyenXeScreenState extends State<BodyChuyenXeScreen> with TickerProv
                                                 ),
                                               ),
                                             ),
-                                            child: Center(
+                                            child: const Center(
                                               child: Text(
                                                 "Bãi xe đến",
                                                 textAlign: TextAlign.left,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontFamily: 'Comfortaa',
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
@@ -1432,6 +1442,11 @@ class _BodyChuyenXeScreenState extends State<BodyChuyenXeScreen> with TickerProv
                                         ),
                                         const Divider(height: 1, color: Color(0xFFCCCCCC)),
                                         Item(
+                                          title: 'Phương thức: ',
+                                          value: _data?.phuongThuc,
+                                        ),
+                                        const Divider(height: 1, color: Color(0xFFCCCCCC)),
+                                        Item(
                                           title: 'Đơn vị vận chuyển: ',
                                           value: _data?.donVi,
                                         ),
@@ -1446,7 +1461,7 @@ class _BodyChuyenXeScreenState extends State<BodyChuyenXeScreen> with TickerProv
                                                   'Loại xe: ',
                                                   style: TextStyle(
                                                     fontFamily: 'Comfortaa',
-                                                    fontSize: 15,
+                                                    fontSize: 13,
                                                     fontWeight: FontWeight.w700,
                                                     color: Color(0xFF818180),
                                                   ),
@@ -1459,10 +1474,10 @@ class _BodyChuyenXeScreenState extends State<BodyChuyenXeScreen> with TickerProv
                                                   child: Text(
                                                     _data?.tenSanPham ?? '',
                                                     textAlign: TextAlign.left,
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                       fontFamily: 'Comfortaa',
-                                                      fontSize: 16,
-                                                      fontWeight: FontWeight.w700,
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.w600,
                                                       color: AppConfig.primaryColor,
                                                     ),
                                                   ),
@@ -1731,25 +1746,25 @@ class Item extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 7.h,
+      height: 6.h,
       padding: const EdgeInsets.only(left: 10, right: 10),
       child: Center(
         child: Row(
           children: [
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontFamily: 'Comfortaa',
-                fontSize: 14,
+                fontSize: 13,
                 fontWeight: FontWeight.w700,
                 color: Color(0xFF818180),
               ),
             ),
             SelectableText(
               value ?? "",
-              style: TextStyle(
+              style: const TextStyle(
                 fontFamily: 'Comfortaa',
-                fontSize: 15,
+                fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: AppConfig.primaryColor,
               ),
@@ -1774,16 +1789,16 @@ class ItemGhiChu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 7.h,
+      height: 6.h,
       padding: const EdgeInsets.only(left: 10, right: 10),
       child: Center(
         child: Row(
           children: [
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontFamily: 'Comfortaa',
-                fontSize: 14,
+                fontSize: 13,
                 fontWeight: FontWeight.w700,
                 color: Color(0xFF818180),
               ),
@@ -1792,16 +1807,16 @@ class ItemGhiChu extends StatelessWidget {
             Expanded(
               child: TextField(
                 controller: controller,
-                style: TextStyle(
+                style: const TextStyle(
                   fontFamily: 'Comfortaa',
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.w700,
                   color: AppConfig.primaryColor,
                 ),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: InputBorder.none, // Loại bỏ đường viền mặc định
                   hintText: '',
-                  contentPadding: EdgeInsets.symmetric(vertical: 9),
+                  // contentPadding: EdgeInsets.symmetric(vertical: 9),
                 ),
               ),
             ),

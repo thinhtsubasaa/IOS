@@ -8,6 +8,9 @@ import '../../widgets/custom_card.dart';
 import '../../widgets/custom_title.dart';
 
 class ChuyenXePage extends StatelessWidget {
+  final String? soKhung;
+
+  ChuyenXePage({this.soKhung});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +25,7 @@ class ChuyenXePage extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
-              child: CustomBodyChuyenXe(),
+              child: CustomBodyChuyenXe(soKhung: soKhung),
             ),
           ),
           BottomContent(),

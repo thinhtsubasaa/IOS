@@ -6,6 +6,7 @@ import 'package:Thilogi/services/request_helper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 import 'package:sizer/sizer.dart';
 import '../../widgets/loading.dart';
 import 'package:http/http.dart' as http;
@@ -99,7 +100,7 @@ class _BodyLSRaCongScreenState extends State<BodyLSRaCongScreen> with TickerProv
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Container(
-        width: MediaQuery.of(context).size.width * 4,
+        width: MediaQuery.of(context).size.width * 4.5,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -125,6 +126,8 @@ class _BodyLSRaCongScreenState extends State<BodyLSRaCongScreen> with TickerProv
                 8: FlexColumnWidth(0.3),
                 9: FlexColumnWidth(0.3),
                 10: FlexColumnWidth(0.3),
+                11: FlexColumnWidth(0.3),
+                12: FlexColumnWidth(0.3),
               },
               children: [
                 TableRow(
@@ -132,6 +135,14 @@ class _BodyLSRaCongScreenState extends State<BodyLSRaCongScreen> with TickerProv
                     Container(
                       color: Colors.red,
                       child: _buildTableCell('Giờ ra', textColor: Colors.white),
+                    ),
+                    Container(
+                      color: Colors.red,
+                      child: _buildTableCell('Trạng thái', textColor: Colors.white),
+                    ),
+                    Container(
+                      color: Colors.red,
+                      child: _buildTableCell('Biển số', textColor: Colors.white),
                     ),
                     Container(
                       color: Colors.red,
@@ -203,25 +214,38 @@ class _BodyLSRaCongScreenState extends State<BodyLSRaCongScreen> with TickerProv
                     8: FlexColumnWidth(0.3),
                     9: FlexColumnWidth(0.3),
                     10: FlexColumnWidth(0.3),
+                    11: FlexColumnWidth(0.3),
+                    12: FlexColumnWidth(0.3),
                   },
                   children: [
                     ..._dn?.map((item) {
                           index++; // Tăng số thứ tự sau mỗi lần lặp
-                          bool highlightRed = item.tenTaiXe == "-" || item.lyDo != null;
+                          // bool highlightRed = item.tenTaiXe == "-" || item.lyDo != null;
                           return TableRow(
+                            decoration: BoxDecoration(
+                              color: item.trangThaiChuyenXe == "Đã xác nhận ra cổng"
+                                  ? Colors.green.withOpacity(0.3)
+                                  : item.trangThaiChuyenXe == "Đã từ chối ra cổng"
+                                      ? Colors.red.withOpacity(0.3)
+                                      : Colors.white, // Màu trắng cho trạng thái Đang kiểm tra hoặc các trạng thái khác
+                            ),
                             children: [
                               // _buildTableCell(index.toString()), // Số thứ tự
-                              _buildTableCell(item.gioRa ?? "", highlightRed: highlightRed),
-                              _buildTableCell(item.soKhung ?? "", highlightRed: highlightRed),
-                              _buildTableCell(item.loaiXe ?? "", highlightRed: highlightRed),
-                              _buildTableCell(item.mauXe ?? "", highlightRed: highlightRed),
-                              _buildTableCell(item.tenTaiXe ?? "", highlightRed: highlightRed),
-                              _buildTableCell(item.noiDi ?? "", highlightRed: highlightRed),
+                              _buildTableCell(item.gioRa ?? ""),
+                              _buildTableCell(
+                                item.trangThaiChuyenXe ?? "",
+                              ),
+                              _buildTableCell(item.bienSo ?? ""),
+                              _buildTableCell(item.soKhung ?? ""),
+                              _buildTableCell(item.loaiXe ?? ""),
+                              _buildTableCell(item.mauXe ?? ""),
+                              _buildTableCell(item.tenTaiXe ?? ""),
+                              _buildTableCell(item.noiDi ?? ""),
 
-                              _buildTableCell(item.noiDen ?? "", highlightRed: highlightRed),
-                              _buildTableCell(item.ghiChu ?? "", highlightRed: highlightRed),
-                              _buildTableCell(item.lyDo ?? "", highlightRed: highlightRed),
-                              _buildTableCell(item.tenBaoVe ?? "", highlightRed: highlightRed),
+                              _buildTableCell(item.noiDen ?? ""),
+                              _buildTableCell(item.ghiChu ?? ""),
+                              _buildTableCell(item.lyDo ?? ""),
+                              _buildTableCell(item.tenBaoVe ?? ""),
                               _buildTableHinhAnh(
                                 item.hinhAnh ?? "",
                               ),
@@ -239,10 +263,7 @@ class _BodyLSRaCongScreenState extends State<BodyLSRaCongScreen> with TickerProv
     );
   }
 
-  Widget _buildTableCell(String content, {Color textColor = Colors.black, bool highlightRed = false}) {
-    if (highlightRed) {
-      textColor = Colors.red;
-    }
+  Widget _buildTableCell(String content, {Color textColor = Colors.black}) {
     return Container(
       padding: const EdgeInsets.all(8),
       child: SelectableText(
@@ -259,19 +280,18 @@ class _BodyLSRaCongScreenState extends State<BodyLSRaCongScreen> with TickerProv
   }
 
   Widget _buildTableHinhAnh(String content, {Color textColor = Colors.black}) {
-    // Tách chuỗi URL thành danh sách các link ảnh
     List<String> imageUrls = content.split(',');
 
     return Container(
-      height: 120,
+      height: 60,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: imageUrls.length,
         itemBuilder: (context, index) {
-          String? imageUrl = imageUrls[index];
+          String imageUrl = imageUrls[index];
           return GestureDetector(
             onTap: () {
-              _showFullImageDialog(imageUrl);
+              _showFullImageDialog(imageUrls, index); // Truyền danh sách ảnh và index hiện tại
             },
             child: Container(
               child: Image.network(
@@ -285,21 +305,77 @@ class _BodyLSRaCongScreenState extends State<BodyLSRaCongScreen> with TickerProv
     );
   }
 
-  void _showFullImageDialog(String imageUrl) {
+  void _showFullImageDialog(List<String> imageUrls, int initialIndex) {
     showDialog(
       context: context,
-      builder: (context) => Dialog(
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          child: PhotoView(
-            imageProvider: NetworkImage(imageUrl),
-            backgroundDecoration: const BoxDecoration(color: Colors.black),
+      builder: (context) {
+        final screenSize = MediaQuery.of(context).size;
+        return Dialog(
+          child: Container(
+            // width: screenSize.width * 1,
+            height: screenSize.height * 0.7,
+            child: PhotoViewGallery.builder(
+              itemCount: imageUrls.length,
+              pageController: PageController(initialPage: initialIndex),
+              builder: (context, index) {
+                return PhotoViewGalleryPageOptions(
+                  imageProvider: NetworkImage(imageUrls[index]),
+                  // backgroundDecoration: BoxDecoration(color: Colors.black),
+                );
+              },
+              scrollPhysics: BouncingScrollPhysics(),
+              backgroundDecoration: BoxDecoration(color: Colors.black),
+              loadingBuilder: (context, event) => Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
+  // Widget _buildTableHinhAnh(String content, {Color textColor = Colors.black}) {
+  //   // Tách chuỗi URL thành danh sách các link ảnh
+  //   List<String> imageUrls = content.split(',');
+
+  //   return Container(
+  //     height: 120,
+  //     child: ListView.builder(
+  //       scrollDirection: Axis.horizontal,
+  //       itemCount: imageUrls.length,
+  //       itemBuilder: (context, index) {
+  //         String? imageUrl = imageUrls[index];
+  //         return GestureDetector(
+  //           onTap: () {
+  //             _showFullImageDialog(imageUrl);
+  //           },
+  //           child: Container(
+  //             child: Image.network(
+  //               imageUrl,
+  //               fit: BoxFit.contain,
+  //             ),
+  //           ),
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
+
+  // void _showFullImageDialog(String imageUrl) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => Dialog(
+  //       child: Container(
+  //         width: double.infinity,
+  //         height: double.infinity,
+  //         child: PhotoView(
+  //           imageProvider: NetworkImage(imageUrl),
+  //           backgroundDecoration: const BoxDecoration(color: Colors.black),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {

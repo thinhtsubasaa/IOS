@@ -13,6 +13,10 @@ class LSX_RaCongModel {
   String? lyDo;
   String? hinhAnh;
   String? noiDi;
+  String? bienSo;
+  String? trangThaiChuyenXe;
+  bool? isOke;
+  bool? isKiemTra;
 
   LSX_RaCongModel(
       {this.id,
@@ -28,7 +32,11 @@ class LSX_RaCongModel {
       this.ghiChu,
       this.hinhAnh,
       this.noiDi,
-      this.lyDo});
+      this.lyDo,
+      this.bienSo,
+      this.isOke,
+      this.isKiemTra,
+      this.trangThaiChuyenXe});
   factory LSX_RaCongModel.fromJson(Map<String, dynamic> json) {
     return LSX_RaCongModel(
         id: json["id"].toString(),
@@ -44,6 +52,10 @@ class LSX_RaCongModel {
         ghiChu: json["ghiChu"],
         lyDo: json["lyDo"],
         hinhAnh: json["hinhAnh"],
+        bienSo: json["bienSo"],
+        trangThaiChuyenXe: json["trangThaiChuyenXe"],
+        isOke: json["isOke"],
+        isKiemTra: json["isKiemTra"],
         noiDi: json["noiDi"]);
   }
 }

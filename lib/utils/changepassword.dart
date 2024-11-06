@@ -4,19 +4,10 @@ import 'package:Thilogi/models/doimatkhau.dart';
 import 'package:Thilogi/services/request_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:Thilogi/pages/qlkho/QLKhoXe.dart';
-import 'package:flutter/material.dart';
-import 'package:Thilogi/blocs/app_bloc.dart';
-import 'package:Thilogi/blocs/user_bloc.dart';
 import 'package:Thilogi/models/icon_data.dart';
 import 'package:Thilogi/services/app_service.dart';
-import 'package:Thilogi/services/auth_service.dart';
-import 'package:Thilogi/utils/next_screen.dart';
-import 'package:Thilogi/widgets/loading_button.dart';
-import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:http/http.dart' as http;
 import '../../config/config.dart';
@@ -61,8 +52,7 @@ class MatKhauScreen extends StatefulWidget {
   _MatKhauScreenState createState() => _MatKhauScreenState();
 }
 
-class _MatKhauScreenState extends State<MatKhauScreen>
-    with TickerProviderStateMixin, ChangeNotifier {
+class _MatKhauScreenState extends State<MatKhauScreen> with TickerProviderStateMixin, ChangeNotifier {
   static RequestHelper requestHelper = RequestHelper();
   bool _loading = false;
   DoiMatKhauModel? _data;
@@ -119,8 +109,7 @@ class _MatKhauScreenState extends State<MatKhauScreen>
       var newScanData = scanData;
 
       print("print data: ${newScanData.newPassword}");
-      final http.Response response = await requestHelper.postData(
-          'Account/ChangePassword', newScanData.toJson());
+      final http.Response response = await requestHelper.postData('Account/ChangePassword', newScanData.toJson());
       print("statusCode: ${response.statusCode}");
       if (response.statusCode == 200) {
         var decodedData = jsonDecode(response.body);
@@ -264,11 +253,11 @@ class _MatKhauScreenState extends State<MatKhauScreen>
         title: '',
         confirmBtnText: 'Đồng ý',
         cancelBtnText: 'Không',
-        confirmBtnTextStyle: TextStyle(
+        confirmBtnTextStyle: const TextStyle(
           fontSize: 16.0,
           fontWeight: FontWeight.bold,
         ),
-        cancelBtnTextStyle: TextStyle(
+        cancelBtnTextStyle: const TextStyle(
           color: Colors.red,
           fontSize: 19.0,
           fontWeight: FontWeight.bold,
@@ -312,8 +301,7 @@ class _MatKhauScreenState extends State<MatKhauScreen>
                     obscureText: obscureText,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
@@ -355,8 +343,7 @@ class _MatKhauScreenState extends State<MatKhauScreen>
                     obscureText: obscureText,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
@@ -398,8 +385,7 @@ class _MatKhauScreenState extends State<MatKhauScreen>
                     obscureText: obscureText,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
@@ -436,9 +422,7 @@ class _MatKhauScreenState extends State<MatKhauScreen>
                               fontSize: 16,
                             )),
                         controller: _btnController,
-                        onPressed: confirmpasswordCtrl.text != null
-                            ? () => _showConfirmationDialog(context)
-                            : null,
+                        onPressed: confirmpasswordCtrl.text != null ? () => _showConfirmationDialog(context) : null,
                       ),
                     ],
                   ),

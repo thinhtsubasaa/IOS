@@ -13,6 +13,8 @@ class DS_RaCongModel {
   String? lyDo;
   String? hinhAnh;
   String? noiDi;
+  String? bienSo;
+  String? trangThaiChuyenXe;
 
   DS_RaCongModel(
       {this.id,
@@ -28,7 +30,9 @@ class DS_RaCongModel {
       this.ghiChu,
       this.lyDo,
       this.hinhAnh,
-      this.noiDi});
+      this.noiDi,
+      this.bienSo,
+      this.trangThaiChuyenXe});
 
   factory DS_RaCongModel.fromJson(Map<String, dynamic> json) {
     return DS_RaCongModel(
@@ -45,6 +49,8 @@ class DS_RaCongModel {
         ghiChu: json["ghiChu"],
         hinhAnh: json["hinhAnh"],
         noiDi: json["noiDi"],
+        bienSo: json["bienSo"],
+        trangThaiChuyenXe: json["trangThaiChuyenXe"],
         lyDo: json["lyDo"]);
   }
 }

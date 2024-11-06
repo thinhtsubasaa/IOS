@@ -210,7 +210,7 @@ class _BodyHuyDongContScreenState extends State<BodyHuyDongContScreen> with Tick
                 },
                 style: const TextStyle(
                   fontFamily: 'Comfortaa',
-                  fontSize: 15,
+                  fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: AppConfig.primaryColor,
                 ),
@@ -399,7 +399,7 @@ class _BodyHuyDongContScreenState extends State<BodyHuyDongContScreen> with Tick
                   _loading
                       ? LoadingWidget(context)
                       : Container(
-                          padding: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -434,7 +434,7 @@ class _BodyHuyDongContScreenState extends State<BodyHuyDongContScreen> with Tick
                         child: Column(
                           children: [
                             Container(
-                              height: 7.h,
+                              height: 6.h,
                               child: Row(
                                 children: [
                                   Container(
@@ -443,7 +443,7 @@ class _BodyHuyDongContScreenState extends State<BodyHuyDongContScreen> with Tick
                                       'Loại xe: ',
                                       style: TextStyle(
                                         fontFamily: 'Comfortaa',
-                                        fontSize: 15,
+                                        fontSize: 13,
                                         fontWeight: FontWeight.w700,
                                         color: Color(0xFF818180),
                                       ),
@@ -458,7 +458,7 @@ class _BodyHuyDongContScreenState extends State<BodyHuyDongContScreen> with Tick
                                         textAlign: TextAlign.left,
                                         style: const TextStyle(
                                           fontFamily: 'Coda Caption',
-                                          fontSize: 16,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.w700,
                                           color: AppConfig.primaryColor,
                                         ),
@@ -474,6 +474,16 @@ class _BodyHuyDongContScreenState extends State<BodyHuyDongContScreen> with Tick
                               value: _data?.soKhung,
                             ),
                             const Divider(height: 1, color: Color(0xFFCCCCCC)),
+                            Item(
+                              title: 'Khu Vực: ',
+                              value: _data?.khuVuc,
+                            ),
+                            const Divider(height: 1, color: Color(0xFFCCCCCC)),
+                            Item(
+                              title: 'Số cont: ',
+                              value: _data?.soCont,
+                            ),
+                            const Divider(height: 1, color: Color(0xFFCCCCCC)),
                             Item(title: 'Màu: ', value: _data != null ? (_data?.tenMau != null && _data?.maMau != null ? "${_data?.tenMau} (${_data?.maMau})" : "") : ""),
                             // value: _data != null
                             //     ? "${_data?.tenMau} (${_data?.maMau})"
@@ -485,15 +495,6 @@ class _BodyHuyDongContScreenState extends State<BodyHuyDongContScreen> with Tick
                               value: _data?.soMay,
                             ),
                             const Divider(height: 1, color: Color(0xFFCCCCCC)),
-                            Item(
-                              title: 'Khu Vực: ',
-                              value: _data?.khuVuc,
-                            ),
-                            const Divider(height: 1, color: Color(0xFFCCCCCC)),
-                            Item(
-                              title: 'Số cont: ',
-                              value: _data?.soCont,
-                            ),
                           ],
                         ),
                       ),
@@ -606,8 +607,8 @@ class Item extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 9.h,
-      padding: const EdgeInsets.all(10),
+      height: 6.h,
+      padding: const EdgeInsets.only(left: 10, right: 10),
       child: Center(
         child: Row(
           children: [
@@ -615,7 +616,7 @@ class Item extends StatelessWidget {
               title,
               style: const TextStyle(
                 fontFamily: 'Comfortaa',
-                fontSize: 15,
+                fontSize: 13,
                 fontWeight: FontWeight.w700,
                 color: Color(0xFF818180),
               ),
@@ -624,7 +625,7 @@ class Item extends StatelessWidget {
               value ?? "",
               style: const TextStyle(
                 fontFamily: 'Comfortaa',
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: FontWeight.w700,
                 color: AppConfig.primaryColor,
               ),
